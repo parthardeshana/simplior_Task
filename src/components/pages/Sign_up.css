@@ -1,0 +1,7 @@
+.form-label {
+	height: 30px;
+	font-size: 14px;
+}
+.errorMsg {
+	color: red !important;
+}
