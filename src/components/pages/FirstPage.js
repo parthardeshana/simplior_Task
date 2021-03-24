@@ -8,11 +8,10 @@ import { db, auth } from '../../fire';
 class FirstPage extends Component {
     state = {
         users: null,
-        currentUser:{}
+        currentUser: {}
     }
     componentDidMount() {
         let tempArr = [];
-        console.log("mounted");
         db.collection('userInfo')
             .get()
             .then(querySnapshot => {
@@ -27,8 +26,6 @@ class FirstPage extends Component {
     }
 
     render() {
-        console.log("users data from firebase", this.state.users)
-
         return (
             <>
                 <div>

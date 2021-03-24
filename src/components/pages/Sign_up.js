@@ -19,7 +19,6 @@ class Sign_upwithRouter extends Component {
     }
 
     logInBtnClickHandler = (e) => {
-        console.log('Sign up clicked')
         this.props.history.push("/login");
     }
 
@@ -35,8 +34,7 @@ class Sign_upwithRouter extends Component {
                         password: this.state.password
                     })
                         .then((docRef) => {
-                            console.log("successfully data added", docRef.id);
-                            alert("thank you signing with us")
+                            // console.log("successfully data added", docRef.id);
                             this.props.history.push("/firstpage");
                         })
                         .catch((err) => {
@@ -98,7 +96,6 @@ class Sign_upwithRouter extends Component {
         e.preventDefault();
     }
     render() {
-        console.log("inside rendere fun", this.state.errors)
         const { companyName, password, companyEmail, repeatPassword, errors, isError } = this.state;
         return (
             <div className="mb-2 inputField w-50 mx-auto">

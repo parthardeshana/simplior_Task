@@ -15,10 +15,7 @@ class Log_inwithRouter extends Component {
         email: "",
         password: ""
     }
-    logInWithGoogleHandler() {
-        console.log("btn clicked sign in ");
 
-    }
     componentDidMount() {
         let tempArr = [];
         db.collection('companyTable')
@@ -38,23 +35,20 @@ class Log_inwithRouter extends Component {
         e.prevantdefault()
         console.log("i am sign in page");
         console.log("my api data", this.state.apiData);
-        // firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-        //     .then((userCredential) => {
-        //         // Signed in
-        //         console.log("logged in");
-        //         // this.props.history.push("/firstpage");
-        //         var user = userCredential.user;
-        //     })
-        //     .catch((error) => {
-        //         error.preventdefault();
-        //         var errorCode = error.code;
-        //         var errorMessage = error.message;
-        //         alert("enter password right");
-        //     });
+        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+            .then((userCredential) => {
+                console.log("logged in");
+                this.props.history.push("/firstpage");
+            })
+            .catch((error) => {
+                error.preventdefault();
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                alert("enter password right");
+            });
 
     }
     signUpBtnClickHandler = () => {
-        console.log("i am sign up page");
         this.props.history.push("/");
     }
     onChange = (e) => {

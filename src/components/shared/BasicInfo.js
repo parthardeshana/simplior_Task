@@ -19,7 +19,6 @@ class BasicInfo extends Component {
         })
     }
     render() {
-        // console.log(this);
         return (
             <div className="card p-3" >
                 <div className="d-flex justify-content-between">

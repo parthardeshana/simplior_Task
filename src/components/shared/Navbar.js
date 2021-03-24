@@ -8,11 +8,10 @@ import { withRouter } from "react-router";
 class NavbarwithRouter extends Component {
     logOut = () => {
         firebase.auth().signOut().then(() => {
-            // Sign-out successful.
             console.log("log off");
             this.props.history.push("/");
         }).catch((error) => {
-            // An error happened.
+            console.error(error);
         });
     }
 
