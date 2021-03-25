@@ -7,57 +7,91 @@ import { withRouter } from "react-router";
 import { db, auth } from '../../fire';
 
 class Log_inwithRouter extends Component {
+
     state = {
-        apiData: {},
-        isLogIn: false,
-        name: "",
-        photo: "",
-        email: "",
-        password: ""
+        companyEmail: "",
+        password: "",
+        isError: false,
+        // companyInfo: {},
+        errors: {}
     }
 
-    componentDidMount() {
-        let tempArr = [];
-        db.collection('companyTable')
-            .get()
-            .then(querySnapshot => {
-                querySnapshot.forEach(doc => {
-                    tempArr.push(doc.data());
+    onSubmit = (e) => {
+        e.preventDefault();
+
+        const isInvalid = this.formValidation();
+        if (!isInvalid) {
+            console.log("1st inside of loop");
+            // get company email and password from api
+            db.collection("companyInfo").where("companyEmail", "==", this.state.companyEmail)
+                .get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        console.log(doc.data());
+                        console.log("i am inside api data")
+                        // this.setState({
+                        //     companyInfo : {
+                        //         apiData_CompanyEmail: doc.data().companyEmail,
+                        //         apiData_password: doc.data().password
+                        //     }
+                        // })
+                        localStorage.setItem('apiData_CompanyEmail', doc.data().companyEmail);
+                        localStorage.setItem('apiData_password', doc.data().password);
+                    });
                 })
-            })
-            .catch(error => console.log(error))
-        this.setState({
-            apiData: tempArr
-        })
-    }
+                .catch((error) => {
+                    console.log("Error getting documents: ", error);
+                });
 
-    logInClickHandler = (e) => {
-        e.prevantdefault()
-        console.log("i am sign in page");
-        console.log("my api data", this.state.apiData);
-        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-            .then((userCredential) => {
-                console.log("logged in");
+            if (this.state.companyEmail === localStorage.getItem("apiData_CompanyEmail") && this.state.password === localStorage.getItem("apiData_password")) {
+                // if (this.state.companyEmail === this.state.companyInfo.apiData_CompanyEmail && this.state.password === this.state.companyInfo.apiData_password) {
+                console.log("you are log in");
                 this.props.history.push("/firstpage");
-            })
-            .catch((error) => {
-                error.preventdefault();
-                var errorCode = error.code;
-                var errorMessage = error.message;
-                alert("enter password right");
-            });
-
+            }
+            else {
+                alert("incorrect username or password!! Try Again");
+                window.location.reload();
+            }
+        }
     }
     signUpBtnClickHandler = () => {
         this.props.history.push("/");
     }
+    formValidation = () => {
+        const { password, companyEmail, isError } = this.state;
+
+        let errors = {
+        };
+        if (!companyEmail) {
+            errors.companyEmail = "Email required";
+            this.setState({
+                isError: true
+            })
+        } else if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(companyEmail.email)) {
+            errors.companyEmail = "Email Address is invalid";
+            this.setState({
+                isError: true
+            })
+        }
+        if (!password) {
+            errors.password = "Password is required";
+            this.setState({
+                isError: true
+            })
+        } else if (password.length < 6) {
+            errors.password = "Password Length needs to be 6 or more than 6 Characters"
+            this.setState({
+                isError: true
+            })
+        }
+        this.setState({ errors });
+        return this.isError;
+    }
     onChange = (e) => {
         this.setState({ [e.target.name]: e.target.value })
     }
-    onSubmit = (e) => {
-        e.prevantdefault();
-    }
     render() {
+        const { password, companyEmail, errors, isError } = this.state;
         return (
             <div className="mb-2 inputField w-50 mx-auto">
                 <form onSubmit={this.onSubmit}>
@@ -65,10 +99,11 @@ class Log_inwithRouter extends Component {
                         <label>Company Email</label>
                         <input type="text"
                             className="form-control"
-                            name="email"
-                            value={this.state.companyEmail}
+                            name="companyEmail"
+                            value={companyEmail}
                             onChange={this.onChange} />
                     </div>
+                    {isError && <p className="errorMsg">{errors.companyEmail}</p>}
                     <div className="mb-2  mx-auto">
                         <label>Password</label>
                         <input type="password"
@@ -77,6 +112,7 @@ class Log_inwithRouter extends Component {
                             value={this.state.password}
                             onChange={this.onChange} />
                     </div>
+                    {isError && <p className="errorMsg">{errors.password}</p>}
                     <div className="d-flex justify-content-between">
                         <div className="d-flex">
                             <input className="mt-1 mr-2" type="checkbox" />
@@ -84,7 +120,7 @@ class Log_inwithRouter extends Component {
                         </div>
                         <a href="#">Forgot Password</a>
                     </div>
-                    <button onClick={() => this.logInClickHandler()} className=" mx-auto mt-3 btn btn-success btn-block">Sign In</button>
+                    <button className=" mx-auto mt-3 btn btn-success btn-block">Sign In</button>
                 </form>
                 <button type="submit" onClick={() => this.signUpBtnClickHandler()} className=" mx-auto mt-2 btn btn-primary btn-block">Sign Up</button>
             </div>

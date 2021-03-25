@@ -63,7 +63,7 @@ class User {
 
     getData(val) {
         return new Promise((resolve, reject) => {
-            if (val == 5) {
+            if (val === 5) {
                 setTimeout(() => {
                     return resolve(this.userInfoList);
                 }, 0);

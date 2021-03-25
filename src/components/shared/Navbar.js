@@ -16,7 +16,7 @@ class NavbarwithRouter extends Component {
     }
 
     render() {
-
+        // console.log("in firstname", this.props.user);
         return (
             <div>
                 <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -46,16 +46,13 @@ class NavbarwithRouter extends Component {
                                 </li>
                                 <li className="nav-item">
                                     <a className="nav-link" href="#" tabindex="-1" aria-disabled="true">
-                                        <button style={{ backgroundColor: "#EDF0F7", color: "black", border: "none", fontSize: "14px" }} className="btn btn-secondary">Hi, <span>UserName</span> </button>
+                                        <button style={{ backgroundColor: "#EDF0F7", color: "black", border: "none", fontSize: "14px" }} className="btn btn-secondary">Hi, <span>userName</span> </button>
                                     </a>
                                 </li>
                                 <li>
                                     <a className="nav-link" href="#" tabindex="-1" aria-disabled="true">
                                         <button onClick={() => this.logOut()} style={{ backgroundColor: "#EDF0F7", color: "black", border: "none", fontSize: "14px" }} className="btn btn-warning">
-                                            {/* <Link className="text-decoration-none" style={{ color: "black" }} to="/">
-                                                Log out
-                                            </Link> */}
-                                        log out</button>
+                                            log out</button>
                                     </a>
                                 </li>
 

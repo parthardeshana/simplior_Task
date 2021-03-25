@@ -21,32 +21,6 @@ class Sign_upwithRouter extends Component {
     logInBtnClickHandler = (e) => {
         this.props.history.push("/login");
     }
-
-    signUpBtnHandler = (e) => {
-        const isValid = this.formValidation();
-        !isValid &&
-            firebase.auth().createUserWithEmailAndPassword(this.state.companyEmail, this.state.password)
-                .then((userCredential) => {
-                    var user = userCredential.user;
-                    db.collection('companyTable').add({
-                        companyName: this.state.companyName,
-                        companyEmail: this.state.companyEmail,
-                        password: this.state.password
-                    })
-                        .then((docRef) => {
-                            // console.log("successfully data added", docRef.id);
-                            this.props.history.push("/firstpage");
-                        })
-                        .catch((err) => {
-                            console.error("erorr adding document", err)
-                        })
-                })
-                .catch((error) => {
-                    var errorCode = error.code;
-                    var errorMessage = error.message;
-                    console.error(error);
-                });
-    }
     onChange = (e) => {
         this.setState({ [e.target.name]: e.target.value })
     }
@@ -56,6 +30,12 @@ class Sign_upwithRouter extends Component {
 
         let errors = {
         };
+        if (!companyName) {
+            errors.companyName = "Company Name required";
+            this.setState({
+                isError: true
+            })
+        }
         if (!companyEmail) {
             errors.companyEmail = "Email required";
             this.setState({
@@ -94,6 +74,29 @@ class Sign_upwithRouter extends Component {
     }
     onSubmit = (e) => {
         e.preventDefault();
+        const isValid = this.formValidation();
+        !isValid &&
+            firebase.auth().createUserWithEmailAndPassword(this.state.companyEmail, this.state.password)
+                .then((userCredential) => {
+                    var user = userCredential.user;
+                    db.collection('companyInfo').add({
+                        companyName: this.state.companyName,
+                        companyEmail: this.state.companyEmail,
+                        password: this.state.password
+                    })
+                        .then((docRef) => {
+                            this.props.history.push("/firstpage");
+                            localStorage.setItem('companyEmail', this.state.companyEmail);
+                        })
+                        .catch((err) => {
+                            console.error("erorr adding document", err)
+                        })
+                })
+                .catch((error) => {
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    console.error(error);
+                });
     }
     render() {
         const { companyName, password, companyEmail, repeatPassword, errors, isError } = this.state;
@@ -108,6 +111,7 @@ class Sign_upwithRouter extends Component {
                             value={companyName}
                             onChange={this.onChange} />
                     </div>
+                    {isError && <p className="errorMsg">{errors.companyName}</p>}
                     <div className="mb-2 mx-auto">
                         <label>Company Email</label>
                         <input type="email"
@@ -135,7 +139,7 @@ class Sign_upwithRouter extends Component {
                             onChange={this.onChange} />
                     </div>
                     {isError && <p className="errorMsg">{errors.repeatPassword}</p>}
-                    <button type="submit" onClick={() => this.signUpBtnHandler()} className=" mx-auto mt-1 btn btn-success btn-block">Sign Up</button>
+                    <button type="submit" className=" mx-auto mt-1 btn btn-success btn-block">Sign Up</button>
                 </form>
                 <button onClick={() => this.logInBtnClickHandler()} className=" mx-auto mt-1 btn btn-primary btn-block">Sign In</button>
                 <button className="mx-auto mt-3 btn btn-outline-success btn-block">sign up using Google  <FontAwesomeIcon className="ml-1" icon={faGoogle} /></button>
