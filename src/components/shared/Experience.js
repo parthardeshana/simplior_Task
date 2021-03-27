@@ -2,22 +2,36 @@ import React, { Component } from 'react'
 import ExperirnceInfo from './ExperirnceInfo';
 import TitleWithImg from './TitleWithImg';
 import EditExperienceModal from '../shared/EditExperienceModal';
-import userObj from '../../api/employeeList';
+import { db } from '../../fire';
 
 class Experience extends Component {
     constructor(props) {
         super(props)
         this.state = {
             isEditExperienceClicked: false,
-            myData: {}
+            API_ExperienceInfo: {}
         }
     }
-    componentDidMount() {
-        userObj.getData(5).then((data) => {
-            this.setState({
-                myData: data
+    database = () => {
+        let tempArr = [];
+        db.collection("experienceInfo")
+            .where("email", "==", localStorage.getItem("logged_email"))
+            .get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    tempArr.push(doc.data());
+                });
+                this.setState({
+                    API_ExperienceInfo: tempArr[0]
+                })
+                console.log("i am queryshot data", tempArr[0]);
             })
-        })
+            .catch((error) => {
+                console.log("Error getting documents: ", error);
+            })
+    }
+    componentDidMount() {
+        this.database();
     }
 
     editExpClickHandler() {
@@ -26,6 +40,8 @@ class Experience extends Component {
         })
     }
     render() {
+        console.log("in render exp info", this.state.API_ExperienceInfo);
+        const experienceInfo = this.state.API_ExperienceInfo;
         return (
             <div>
                 <div className="card p-3" >
@@ -35,9 +51,7 @@ class Experience extends Component {
                             <a onClick={() => this.editExpClickHandler()} className="text-decoration-none" style={{ fontSize: "16px" }} href="#">Edit</a>
                         </div>
                     </div>
-                    <ExperirnceInfo designation="Sr. Developer" company="Microsoft" jobType="Full Time" experince="Jul 2019 - Dec 2020 " description="At Microsoft I am working on React.js Developer" />
-                    <ExperirnceInfo designation="software Developer" company="Google" jobType="Part Time" experince="Sep 2015 - Jul 2019 3 yr 11 mos" description="At Google I am working on JAVA Developer and machine lernig." />
-                    <ExperirnceInfo designation="software Developer" company="Google" jobType="Part Time" experince="Sep 2015 - Jul 2019 3 yr 11 mos" description="At Google I am working on JAVA Developer and machine lernig." />
+                    <ExperirnceInfo designation={experienceInfo.title} company={experienceInfo.company} jobType={experienceInfo.jobType} experince={experienceInfo.experince} description={experienceInfo.description} />
                 </div>
                 <EditExperienceModal isEditClicked={this.state.isEditExperienceClicked}
                     closeExperienceModal={() => this.setState({

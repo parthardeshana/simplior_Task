@@ -85,8 +85,8 @@ class Sign_upwithRouter extends Component {
                         password: this.state.password
                     })
                         .then((docRef) => {
+                            localStorage.setItem('logged_email', this.state.companyEmail);
                             this.props.history.push("/firstpage");
-                            localStorage.setItem('companyEmail', this.state.companyEmail);
                         })
                         .catch((err) => {
                             console.error("erorr adding document", err)

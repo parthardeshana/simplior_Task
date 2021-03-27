@@ -9,6 +9,7 @@ class NavbarwithRouter extends Component {
     logOut = () => {
         firebase.auth().signOut().then(() => {
             console.log("log off");
+            localStorage.setItem("logged_email", "");
             this.props.history.push("/");
         }).catch((error) => {
             console.error(error);
@@ -16,7 +17,8 @@ class NavbarwithRouter extends Component {
     }
 
     render() {
-        // console.log("in firstname", this.props.user);
+        // console.log("navvvvvvvvvvvvv", this.props.userInfo);
+        let userName = this.props.userInfo ? this.props.userInfo : "userName";
         return (
             <div>
                 <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -46,7 +48,7 @@ class NavbarwithRouter extends Component {
                                 </li>
                                 <li className="nav-item">
                                     <a className="nav-link" href="#" tabindex="-1" aria-disabled="true">
-                                        <button style={{ backgroundColor: "#EDF0F7", color: "black", border: "none", fontSize: "14px" }} className="btn btn-secondary">Hi, <span>userName</span> </button>
+                                        <button style={{ backgroundColor: "#EDF0F7", color: "black", border: "none", fontSize: "14px" }} className="btn btn-secondary">Hi, {userName} </button>
                                     </a>
                                 </li>
                                 <li>
@@ -60,7 +62,7 @@ class NavbarwithRouter extends Component {
                         </div>
                     </div>
                 </nav>
-            </div>
+            </div >
         )
     }
 }

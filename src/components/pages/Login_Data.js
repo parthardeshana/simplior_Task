@@ -12,8 +12,26 @@ class Log_inwithRouter extends Component {
         companyEmail: "",
         password: "",
         isError: false,
-        // companyInfo: {},
+        API_companyInfo: {},
         errors: {}
+    }
+
+    databsae = () => {
+        let tempArr = [];
+        db.collection("companyInfo")
+            .where("email", "==", this.state.companyEmail)
+            .get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    tempArr.push(doc.data());
+                });
+                this.setState({
+                    API_companyInfo: tempArr[0]
+                })
+            })
+            .catch((error) => {
+                console.log("Error getting documents: ", error);
+            })
     }
 
     onSubmit = (e) => {
@@ -21,36 +39,20 @@ class Log_inwithRouter extends Component {
 
         const isInvalid = this.formValidation();
         if (!isInvalid) {
-            console.log("1st inside of loop");
-            // get company email and password from api
-            db.collection("companyInfo").where("companyEmail", "==", this.state.companyEmail)
-                .get()
-                .then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
-                        console.log(doc.data());
-                        console.log("i am inside api data")
-                        // this.setState({
-                        //     companyInfo : {
-                        //         apiData_CompanyEmail: doc.data().companyEmail,
-                        //         apiData_password: doc.data().password
-                        //     }
-                        // })
-                        localStorage.setItem('apiData_CompanyEmail', doc.data().companyEmail);
-                        localStorage.setItem('apiData_password', doc.data().password);
-                    });
-                })
-                .catch((error) => {
-                    console.log("Error getting documents: ", error);
-                });
-
-            if (this.state.companyEmail === localStorage.getItem("apiData_CompanyEmail") && this.state.password === localStorage.getItem("apiData_password")) {
-                // if (this.state.companyEmail === this.state.companyInfo.apiData_CompanyEmail && this.state.password === this.state.companyInfo.apiData_password) {
-                console.log("you are log in");
+            // calling api 
+            this.database();
+            // if (this.state.companyEmail == this.state.API_companyInfo.companyEmail &&
+            //     this.state.password == this.state.API_companyInfo.password) {
+            if (true) {
+                console.log("you are log in ==>>>>>>>>");
+                console.log(this.state.API_companyInfo.companyEmail, this.state.API_companyInfo.password)
+                localStorage.setItem('logged_email', this.state.companyEmail);
+                console.log("your loged email id is ", this.state.companyEmail);
                 this.props.history.push("/firstpage");
             }
             else {
                 alert("incorrect username or password!! Try Again");
-                window.location.reload();
+                localStorage.setItem('logged_email', undefined);
             }
         }
     }
@@ -91,6 +93,7 @@ class Log_inwithRouter extends Component {
         this.setState({ [e.target.name]: e.target.value })
     }
     render() {
+        console.log("teessssssssttttttttttttting", this.state.API_companyInfo);
         const { password, companyEmail, errors, isError } = this.state;
         return (
             <div className="mb-2 inputField w-50 mx-auto">

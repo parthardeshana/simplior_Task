@@ -19,6 +19,9 @@ class BasicInfo extends Component {
         })
     }
     render() {
+        const userInfo = this.props.userInfo;
+        let mergeAddress = `${userInfo.plotNumber}, ${userInfo.society}, ${userInfo.location}, ${userInfo.state} ${userInfo.zip}`;
+        console.log("address", mergeAddress);
         return (
             <div className="card p-3" >
                 <div className="d-flex justify-content-between">
@@ -35,20 +38,20 @@ class BasicInfo extends Component {
                     </div>
                     <div className="ml-3 mt-2">
                         <div className="ml-3">
-                            <h5 className="m-2">User Name</h5>
+                            <h5 className="m-2"> {userInfo.firstName} {userInfo.lastName}</h5>
                             <div className="m-2" style={{ color: "#6C7293", opacity: "1" }}>
                                 <div className="d-flex">
-                                    <p className="mb-1 mr-2">Web Designer(Full Time)  </p>
+                                    <p className="mb-1 mr-2">{userInfo.designation} <span> ({userInfo.jobType})</span>  </p>
                                     <p className="mb-1 ml-2">|</p>
-                                    <p className="mb-1 ml-3"> Started on August 15th, 2020</p>
+                                    <p className="mb-1 ml-3"> {userInfo.startDate}</p>
                                 </div>
-                                <p className="m-0">Ahemdabad, Gujarat, india.</p>
+                                <p className="m-0">{userInfo.location}, {userInfo.country}</p>
                             </div>
                         </div>
-                        <SubInfo logo={faPhoneAlt} name="Phone No." details="+91 0123 456 789" />
-                        <SubInfo logo={faMapMarkerAlt} name="Address" details="123, Galaxy signature, Scincity Road, Sola, Ahmedabad, Gujarat, 320012." />
-                        <SubInfo logo={faEnvelope} name="Email" details="johndeo@simplior.com" />
-                        <SubInfo logo={faBirthdayCake} name="Birthday" details="Jan 15" />
+                        <SubInfo logo={faPhoneAlt} name="Phone No." details={userInfo.phone} />
+                        <SubInfo logo={faMapMarkerAlt} name="Address" details={mergeAddress} />
+                        <SubInfo logo={faEnvelope} name="Email" details={userInfo.email} />
+                        <SubInfo logo={faBirthdayCake} name="Birthday" details={userInfo.birthday} />
                     </div>
                 </div>
                 <EditBasicInfoModal isEditClicked={this.state.isEditBasicInfoClicked}
