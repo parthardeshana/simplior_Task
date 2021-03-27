@@ -16,7 +16,7 @@ class Log_inwithRouter extends Component {
         errors: {}
     }
 
-    databsae = () => {
+    database_API = () => {
         let tempArr = [];
         db.collection("companyInfo")
             .where("email", "==", this.state.companyEmail)
@@ -40,7 +40,7 @@ class Log_inwithRouter extends Component {
         const isInvalid = this.formValidation();
         if (!isInvalid) {
             // calling api 
-            this.database();
+            this.database_API();
             // if (this.state.companyEmail == this.state.API_companyInfo.companyEmail &&
             //     this.state.password == this.state.API_companyInfo.password) {
             if (true) {
