@@ -8,21 +8,25 @@ class FirstPage extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            API_userInfo: {}
+            API_userInfo: {},
+            API_userId: ""
         }
     }
 
     databsae = () => {
         let tempArr = [];
+        let userId = "";
         db.collection("userInfo")
             .where("email", "==", localStorage.getItem("logged_email"))
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                     tempArr.push(doc.data());
+                    userId = doc.id;
                 });
                 this.setState({
-                    API_userInfo: tempArr[0]
+                    API_userInfo: tempArr[0],
+                    API_userId: userId
                 })
             })
             .catch((error) => {
@@ -34,12 +38,11 @@ class FirstPage extends Component {
     }
 
     render() {
-        // console.log("state userinfo store 0000000", this.state.API_userInfo);
         return (
             <>
                 <div>
                     <Navbar userInfo={this.state.API_userInfo.firstName} />
-                    <BasicInfo userInfo={this.state.API_userInfo} />
+                    <BasicInfo userInfo={this.state.API_userInfo} userId={this.state.API_userId} />
                     <Experience />
                 </div>
             </>

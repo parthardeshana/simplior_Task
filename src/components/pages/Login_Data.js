@@ -19,7 +19,7 @@ class Log_inwithRouter extends Component {
     database_API = () => {
         let tempArr = [];
         db.collection("companyInfo")
-            .where("email", "==", this.state.companyEmail)
+            .where("companyEmail", "==", this.state.companyEmail)
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
@@ -27,13 +27,25 @@ class Log_inwithRouter extends Component {
                 });
                 this.setState({
                     API_companyInfo: tempArr[0]
+                }, () => {
+                    this.submitForm();
                 })
             })
             .catch((error) => {
                 console.log("Error getting documents: ", error);
             })
     }
-
+    submitForm = () => {
+        if (this.state.companyEmail == this.state.API_companyInfo.companyEmail &&
+            this.state.password == this.state.API_companyInfo.password) {
+            localStorage.setItem('logged_email', this.state.companyEmail);
+            this.props.history.push("/firstpage");
+        }
+        else {
+            alert("incorrect username or password!! Try Again");
+            localStorage.setItem('logged_email', undefined);
+        }
+    }
     onSubmit = (e) => {
         e.preventDefault();
 
@@ -41,19 +53,6 @@ class Log_inwithRouter extends Component {
         if (!isInvalid) {
             // calling api 
             this.database_API();
-            // if (this.state.companyEmail == this.state.API_companyInfo.companyEmail &&
-            //     this.state.password == this.state.API_companyInfo.password) {
-            if (true) {
-                console.log("you are log in ==>>>>>>>>");
-                console.log(this.state.API_companyInfo.companyEmail, this.state.API_companyInfo.password)
-                localStorage.setItem('logged_email', this.state.companyEmail);
-                console.log("your loged email id is ", this.state.companyEmail);
-                this.props.history.push("/firstpage");
-            }
-            else {
-                alert("incorrect username or password!! Try Again");
-                localStorage.setItem('logged_email', undefined);
-            }
         }
     }
     signUpBtnClickHandler = () => {
@@ -93,7 +92,6 @@ class Log_inwithRouter extends Component {
         this.setState({ [e.target.name]: e.target.value })
     }
     render() {
-        console.log("teessssssssttttttttttttting", this.state.API_companyInfo);
         const { password, companyEmail, errors, isError } = this.state;
         return (
             <div className="mb-2 inputField w-50 mx-auto">

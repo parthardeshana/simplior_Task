@@ -25,7 +25,6 @@ class Sign_upwithRouter extends Component {
         this.setState({ [e.target.name]: e.target.value })
     }
     formValidation = () => {
-        console.log('form validation is called');
         const { companyName, password, companyEmail, repeatPassword, isError } = this.state;
 
         let errors = {

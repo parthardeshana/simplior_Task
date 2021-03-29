@@ -24,7 +24,6 @@ class Experience extends Component {
                 this.setState({
                     API_ExperienceInfo: tempArr[0]
                 })
-                console.log("i am queryshot data", tempArr[0]);
             })
             .catch((error) => {
                 console.log("Error getting documents: ", error);
@@ -39,19 +38,28 @@ class Experience extends Component {
             isEditExperienceClicked: true
         })
     }
+    addExperienceInfoClickHandler = () => {
+
+        // this.setState({
+        //     isEditExperienceClicked: true
+        // })
+    }
     render() {
-        console.log("in render exp info", this.state.API_ExperienceInfo);
         const experienceInfo = this.state.API_ExperienceInfo;
+        console.log("aaaaa", this.state.API_ExperienceInfo);
+
         return (
             <div>
                 <div className="card p-3" >
                     <div className="d-flex justify-content-between">
                         <TitleWithImg title="Experience" />
                         <div className="m-2">
-                            <a onClick={() => this.editExpClickHandler()} className="text-decoration-none" style={{ fontSize: "16px" }} href="#">Edit</a>
+                            {this.state.API_ExperienceInfo ?
+                                <a onClick={() => this.editExpClickHandler()} className="text-decoration-none" style={{ fontSize: "16px" }} href="#">Edit</a>
+                                : <a onClick={() => this.addExperienceInfoClickHandler()} className="text-decoration-none" style={{ fontSize: "16px" }} href="#">Add Basic-Info</a>}
                         </div>
                     </div>
-                    <ExperirnceInfo designation={experienceInfo.title} company={experienceInfo.company} jobType={experienceInfo.jobType} experince={experienceInfo.experince} description={experienceInfo.description} />
+                    <ExperirnceInfo experienceInfo={this.state.API_ExperienceInfo} />
                 </div>
                 <EditExperienceModal isEditClicked={this.state.isEditExperienceClicked}
                     closeExperienceModal={() => this.setState({

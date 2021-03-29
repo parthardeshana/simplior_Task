@@ -2,16 +2,48 @@ import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal } from 'react-bootstrap';
 import './EditBasicInfoModal.css';
+import { db } from '../../fire';
 
 class EditExperienceModal extends Component {
+
     constructor(props) {
         super(props)
+        this.state = {
+            API_companyInfo: {},
+            email: "",
+            mobileNumber: "",
+            employeeType: "",
+            jobTy: ""
+        }
     }
-
+    componentDidMount() {
+        this.databsae();
+    }
+    databsae = () => {
+        let tempArr = [];
+        db.collection("experienceInfo")
+            .where("email", "==", localStorage.getItem("logged_email"))
+            .get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    tempArr.push(doc.data());
+                });
+                this.setState({
+                    API_companyInfo: tempArr[0]
+                })
+            })
+            .catch((error) => {
+                console.log("Error getting documents: ", error);
+            })
+    }
     editExperienceModalCloseHandler() {
         this.props.closeExperienceModal();
     }
+    onChange = (e) => {
+        this.setState({ [e.target.name]: e.target.value })
+    }
     render() {
+        console.log("company details ::: ", this.state.API_companyInfo);
         return (
             <div className="myModal">
                 <Modal show={this.props.isEditClicked}>
@@ -27,7 +59,7 @@ class EditExperienceModal extends Component {
                                     <label>Title</label>
                                 </div>
                                 <div className="col-md-8">
-                                    <input placeholder="Ex.Retail Sales Manager" style={{ width: "77%" }} className="mr-2" type="text" />
+                                    <input value={this.state.API_companyInfo.title} name="title" placeholder="Ex.Retail Sales Manager" style={{ width: "77%" }} className="mr-2" type="text" />
                                 </div>
                             </div>
                             <div className="row m-2 mt-3">
@@ -35,7 +67,7 @@ class EditExperienceModal extends Component {
                                     <label> Employement Type</label>
                                 </div>
                                 <div className="col-md-8">
-                                    <input placeholder="Formal Name" style={{ width: "77%" }} className="mr-2" type="text" />
+                                    <input placeholder="job Type" value={this.state.API_companyInfo.jobType} style={{ width: "77%" }} className="mr-2" type="text" />
                                 </div>
                             </div>
                             <div className="row m-2 mt-3">
@@ -43,7 +75,7 @@ class EditExperienceModal extends Component {
                                     <label>Company</label>
                                 </div>
                                 <div className="col-md-8">
-                                    <input placeholder="Ex. Microsoft" style={{ width: "77%" }} className="mr-2" type="text" />
+                                    <input value={this.state.API_companyInfo.company} placeholder="Ex. Microsoft" style={{ width: "77%" }} className="mr-2" type="text" />
                                 </div>
                             </div>
                             <div className="row m-2 mt-3">
@@ -51,8 +83,8 @@ class EditExperienceModal extends Component {
                                     <label>Location</label>
                                 </div>
                                 <div className="col-md-8">
-                                    <input placeholder="Location" style={{ width: "77%" }} className="mr-2" type="text" />
-                                    <p className="mb-0">I am currently working in this role</p>
+                                    <input value={this.state.API_companyInfo.location} placeholder="Location" style={{ width: "77%" }} className="mr-2" type="text" />
+                                    <p className="mb-0" value={this.state.API_companyInfo.headline}></p>
                                 </div>
                             </div>
                             <div className="row m-2 mt-3">
@@ -105,7 +137,7 @@ class EditExperienceModal extends Component {
                                         </select>
                                         <select className="form-select ExpYearModal" aria-label="Default select example">
                                             <option selected>Year</option>
-                                            <option value="2021">2021</option>
+                                            <option value="2021" >2021</option>
                                             <option value="2020">2020</option>
                                             <option value="2019">2019</option>
                                             <option value="2018">2018</option>
@@ -128,7 +160,6 @@ class EditExperienceModal extends Component {
                         </form>
                     </Modal.Body>
                 </Modal>
-
             </div>
 
         )

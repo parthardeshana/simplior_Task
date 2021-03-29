@@ -8,7 +8,6 @@ import { withRouter } from "react-router";
 class NavbarwithRouter extends Component {
     logOut = () => {
         firebase.auth().signOut().then(() => {
-            console.log("log off");
             localStorage.setItem("logged_email", "");
             this.props.history.push("/");
         }).catch((error) => {
@@ -17,7 +16,6 @@ class NavbarwithRouter extends Component {
     }
 
     render() {
-        // console.log("navvvvvvvvvvvvv", this.props.userInfo);
         let userName = this.props.userInfo ? this.props.userInfo : "userName";
         return (
             <div>
