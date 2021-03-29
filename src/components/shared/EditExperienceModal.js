@@ -43,7 +43,7 @@ class EditExperienceModal extends Component {
         this.setState({ [e.target.name]: e.target.value })
     }
     render() {
-        console.log("company details ::: ", this.state.API_companyInfo);
+        // console.log("company details ::: ", this.state.API_companyInfo);
         return (
             <div className="myModal">
                 <Modal show={this.props.isEditClicked}>

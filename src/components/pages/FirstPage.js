@@ -25,7 +25,9 @@ class FirstPage extends Component {
                     userId = doc.id;
                 });
                 this.setState({
-                    API_userInfo: tempArr[0],
+                    API_userInfo: {
+                        ...tempArr[0]
+                    },
                     API_userId: userId
                 })
             })
@@ -34,13 +36,16 @@ class FirstPage extends Component {
             })
     }
     componentDidMount() {
+
         this.databsae();
     }
 
     render() {
+        console.log("in first page", this.state);
         return (
             <>
                 <div>
+                    {/* {this.state.API_userInfo && this.state.API_userInfo.firstName} */}
                     <Navbar userInfo={this.state.API_userInfo.firstName} />
                     <BasicInfo userInfo={this.state.API_userInfo} userId={this.state.API_userId} />
                     <Experience />
