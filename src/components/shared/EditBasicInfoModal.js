@@ -23,38 +23,12 @@ class EditBasicInfoModal extends Component {
             zip: ""
         }
     }
-    // static getDerivedStateFromProps(nextProps, prevState) {
-    // console.log("prev state", prevState, "next props", nextProps);
-    // if (prevState !== nextProps.userInfo) {
-    // if (prevState.firstName !== nextProps.userInfo.firstName) {
-    // if (true) {
-
-    // return {
-    //     firstName: nextProps.userInfo.firstName,
-    //     lastName: nextProps.userInfo.lastName,
-    //     formalName: nextProps.userInfo.formalName,
-    //     email: nextProps.userInfo.email,
-    //     gender: nextProps.userInfo.gender,
-    //     mobileNumber: nextProps.userInfo.mobileNumber,
-    //     birthday: nextProps.userInfo.birthday,
-    //     plotNumber: nextProps.userInfo.plotNumber,
-    //     state: nextProps.userInfo.state,
-    //     society: nextProps.userInfo.society,
-    //     country: nextProps.userInfo.country,
-    //     location: nextProps.userInfo.location,
-    //     zip: nextProps.userInfo.zip
-    // }
-
-    // }
-    // return null;
-    // }
 
     modalCloseHandler() {
         this.props.closeModal();
     }
 
     updateBasicInfoHandler = () => {
-        console.log("in database", this.state);
         db.collection("userInfo").doc(this.props.userId).update({
             firstName: this.state.firstName,
             lastName: this.state.lastName,
@@ -77,11 +51,8 @@ class EditBasicInfoModal extends Component {
     }
     onChange = (e) => {
         this.setState({ [e.target.name]: e.target.value })
-        // console.log("my eventtt",e.target.value);
-        // console.log("my stateett",this.state);
     }
     render() {
-        console.log("in modal userIDDDDDDDD ", this.props.userId);
         let userInfo = this.props.userInfo;
         return (
             <div className="myModal">

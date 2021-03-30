@@ -9,7 +9,11 @@ class EditExperienceModal extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            API_companyInfo: {},
+            API_companyInfo: {
+                firstName: "userName",
+                lastName: "LastName",
+                title: "designation"
+            },
             email: "",
             mobileNumber: "",
             employeeType: "",
@@ -43,7 +47,6 @@ class EditExperienceModal extends Component {
         this.setState({ [e.target.name]: e.target.value })
     }
     render() {
-        // console.log("company details ::: ", this.state.API_companyInfo);
         return (
             <div className="myModal">
                 <Modal show={this.props.isEditClicked}>

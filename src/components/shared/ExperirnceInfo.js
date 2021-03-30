@@ -3,7 +3,6 @@ import microsoftLogo from '../../images/microsoft.png';
 
 class ExperirnceInfo extends Component {
     render() {
-        console.log("i looooooo", this.props.experienceInfo)
         return (
             <div className="d-flex m-3">
                 <div>

@@ -39,15 +39,12 @@ class Experience extends Component {
         })
     }
     addExperienceInfoClickHandler = () => {
-
-        // this.setState({
-        //     isEditExperienceClicked: true
-        // })
+        this.setState({
+            isEditExperienceClicked: true
+        })
     }
     render() {
         const experienceInfo = this.state.API_ExperienceInfo;
-        console.log("aaaaa", this.state.API_ExperienceInfo);
-
         return (
             <div>
                 <div className="card p-3" >
